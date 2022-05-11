@@ -1,9 +1,10 @@
 import base64
 import os
-from .setting import get_settings
 import requests
 from loguru import logger
 from pathlib import Path
+
+from .setting import get_settings
 
 
 @logger.catch
@@ -36,7 +37,7 @@ def download_audio(text="",
 
 
 @logger.catch
-def translate_text(text="", target="zh_TW"):
+def translate_text_api(text="", target="zh_TW"):
 
     key = get_settings().TRANSLATION_API_KEY
     url = "https://translation.googleapis.com/language/translate/v2"
@@ -47,6 +48,23 @@ def translate_text(text="", target="zh_TW"):
     if response.status_code == 200:
         response = response.json()["data"]["translations"][0]["translatedText"]
         logger.debug(f"cloud translation text = {response}")
+        return response
+    else:
+        logger.error(
+            f"cloud translation response error, status_code = {response.status_code}"
+        )
+
+
+@logger.catch
+def english_dict_api(text=""):
+
+    url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + text
+
+    response = requests.get(url)
+    logger.debug(f"English Dictionary response = {response.status_code}")
+    if response.status_code == 200:
+        response = response.json()
+        logger.debug(f"English Dictionary text = {response}")
         return response
     else:
         logger.error(
