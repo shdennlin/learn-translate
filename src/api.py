@@ -5,35 +5,38 @@ from loguru import logger
 from pathlib import Path
 
 from .setting import get_settings
+from .usecases import requests_funs
 
 
 @logger.catch
-def download_audio(word="",
+def download_audio(text="",
                    languageCode="en-US",
                    audio_path=Path(get_settings().TMP_DIR, "temp.mp3")):
     key = get_settings().TEXT_TO_SPEECH_API_KEY
-    url = "https://texttospeech.googleapis.com/v1/word:synthesize"
+    url = "https://texttospeech.googleapis.com/v1/text:synthesize"
     params = {"key": key}
     json = {
         "voice": {
             "languageCode": languageCode
         },
         "input": {
-            "word": word
+            "text": text
         },
         "audioConfig": {
             "audioEncoding": "mp3"
         }
     }
-    response = requests.post(url, params=params, json=json)
-    if response.status_code == 200:
+
+    response = requests_funs("Cloud Text to Speech API", "post", url, params,
+                             json)
+    try:
         os.remove(audio_path)
+    except:
+        pass
+
+    if response:
         with open(audio_path, 'wb') as fp:
-            fp.write(base64.b64decode(response.json()["audioContent"]))
-    else:
-        logger.error(
-            f"cloud translation response error, status_code = {response.status_code}"
-        )
+            fp.write(base64.b64decode(response["audioContent"]))
 
 
 @logger.catch
@@ -44,16 +47,9 @@ def translate_text_api(word="", target="zh_TW"):
     url = "https://translation.googleapis.com/language/translate/v2"
     params = {"key": key, "target": target, "q": word}
 
-    response = requests.post(url, params=params)
-    logger.debug(f"cloud translation response = {response.status_code}")
-    if response.status_code == 200:
-        response = response.json()["data"]["translations"][0]["translatedText"]
-        logger.debug(f"cloud translation word = {response}")
-        return response
-    else:
-        logger.error(
-            f"cloud translation response error, status_code = {response.status_code}"
-        )
+    response = requests_funs("Cloud Translate API", "post", url, params)
+
+    return response
 
 
 @logger.catch
@@ -61,20 +57,8 @@ def eng_eng_dict_api(word=""):
     """ return response.json()"""
 
     url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
-
-    response = requests.get(url)
-    logger.debug(f"English Dictionary API = {response.status_code}")
-    if response.status_code == 200:
-        response = response.json()
-        logger.debug(
-            f"English Dictionary API, word={word}, response={response}")
-        return response
-    elif response.status_code == 404:
-        return None
-    else:
-        logger.error(
-            f"cloud translation response error, status_code = {response.status_code}"
-        )
+    response = requests_funs("Free Dictionary API", "get", url)
+    return response
 
 
 @logger.catch
@@ -97,15 +81,6 @@ def google_dict_api(word="test",
         "q": word
     }
 
-    response = requests.get(url, params=params)
-    logger.debug(f"Google free Dict API = {response.status_code}")
-    if response.status_code == 200:
-        response = response.json()
-        logger.debug(f"Google free Dict API, word={word}, response={response}")
-        return response
-    elif response.status_code == 404:
-        return None
-    else:
-        logger.error(
-            f"Google free Dict API response error, status_code = {response.status_code}"
-        )
+    response = requests_funs("Google free Dictionary API", "get", url, params)
+    # response = requests.get(url, params=params)
+    return response
