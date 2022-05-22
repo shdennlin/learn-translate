@@ -12,14 +12,13 @@ def requests_funs(name, rq_type, url, params=None, json=None):
         response = requests.post(url, params=params, json=json)
 
     status_code = response.status_code
-    res_json = response.json()
 
     if status_code == 200:
         logger.debug(f"{status_code} -> {name}")
-        return res_json
+        return response
     elif status_code == 404:
         logger.debug(f"{status_code} -> {name}")
-        return None
+        return ""
     else:
         logger.error(logger.debug(f"{status_code} -> {name}"))
         return None

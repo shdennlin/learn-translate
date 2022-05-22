@@ -4,15 +4,19 @@ from loguru import logger
 from pathlib import Path
 
 from ..usecases.usecases import requests_funs
-from ..usecases.setting import get_settings
+from ..setting import get_settings
 
 
 class ApiModel():
 
+    def __init__(self):
+        self.text = ""
+
     @logger.catch
-    def download_audio(text="",
-                       languageCode="en-US",
-                       audio_path=Path(get_settings().TMP_DIR, "temp.mp3")):
+    def _download_audio(self,
+                        languageCode="en-US",
+                        audio_path=Path(get_settings().TMP_DIR, "temp.mp3")):
+        text = self.text
         key = get_settings().TEXT_TO_SPEECH_API_KEY
         url = "https://texttospeech.googleapis.com/v1/text:synthesize"
         params = {"key": key}
@@ -39,10 +43,13 @@ class ApiModel():
             with open(audio_path, 'wb') as fp:
                 fp.write(base64.b64decode(response["audioContent"]))
 
+        return response
+
     @logger.catch
-    def translate_text_api(word="", target="zh_TW"):
+    def _translate_text_api(self, target="zh_TW"):
         """ return response.json()"""
 
+        word = self.text
         key = get_settings().TRANSLATION_API_KEY
         url = "https://translation.googleapis.com/language/translate/v2"
         params = {"key": key, "target": target, "q": word}
@@ -52,20 +59,21 @@ class ApiModel():
         return response
 
     @logger.catch
-    def eng_eng_dict_api(word=""):
+    def _eng_eng_dict_api(self):
         """ return response.json()"""
-
+        word = self.text
         url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
         response = requests_funs("Free Dictionary API", "get", url)
         return response
 
     @logger.catch
-    def google_dict_api(word="test",
-                        source_lanuage="auto",
-                        target_language="zh_TW",
-                        ui_language="en"):
+    def _google_dict_api(self,
+                         source_lanuage="auto",
+                         target_language="zh_TW",
+                         ui_language="en"):
         """ return response.json()"""
 
+        word = self.text
         url = "https://translate.googleapis.com/translate_a/single?client=gtx&ie=UTF-8&oe=UTF-8&dt=bd&dt=ex&dt=ld&dt=md&dt=rw&dt=rm&dt=ss&dt=t&dt=at&dt=qc"
 
         params = {
