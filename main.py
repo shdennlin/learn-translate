@@ -7,10 +7,13 @@ import time
 import codecs
 import json
 from PyQt5 import uic, QtWidgets
+from PyQt5.QtCore import Qt
 
 
+from src.controllers.keyEventController import keyEventListener
 from src.controllers.controllers import Controller
-from src.views.views import mainUI
+from src.views.views import mainWindows
+from src.models.ApiModel import ApiModel
 # from src.models.ApiModel import *
 # from src.models.AudioModel import *
 # from src.setting import get_settings, GlobalVariable
@@ -70,13 +73,15 @@ def main():
 class App(QtWidgets.QApplication):
     def __init__(self, sys_argv):
         super(App, self).__init__(sys_argv)
-        self.model = Model()
-        self.main_view = mainUI()
+        self.model = ApiModel()
+        self.main_view = mainWindows()
         self.main_controller = Controller(self.main_view, self.model)
 
         self.main_view.show()
 
 
 if __name__ == '__main__':
+    KeyEventListener = keyEventListener()
+    KeyEventListener.run()
     app = App(sys.argv)
     sys.exit(app.exec_())
