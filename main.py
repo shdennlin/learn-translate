@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
+from multiprocessing.spawn import import_main_path
 from pygame import mixer
 from pathlib import Path
+import sys
 import time
 import codecs
 import json
+from PyQt5 import uic, QtWidgets
 
-from src.models.ApiModel import *
-from src.models.AudioModel import *
+
+from src.controllers.controllers import Controller
+from src.views.views import mainUI
+# from src.models.ApiModel import *
+# from src.models.AudioModel import *
 # from src.setting import get_settings, GlobalVariable
 # from src.api import download_audio, translate_text_api, eng_eng_dict_api, google_dict_api
 # from src.audio import play_audio, stop_audio
@@ -61,7 +67,16 @@ def main():
         time.sleep(0.1)
 
 
+class App(QtWidgets.QApplication):
+    def __init__(self, sys_argv):
+        super(App, self).__init__(sys_argv)
+        self.model = Model()
+        self.main_view = mainUI()
+        self.main_controller = Controller(self.main_view, self.model)
+
+        self.main_view.show()
+
+
 if __name__ == '__main__':
-    res = translate_text_api(["bitch", "process"])
-    if res:
-        print(res["data"]["translations"])
+    app = App(sys.argv)
+    sys.exit(app.exec_())
