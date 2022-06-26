@@ -1,5 +1,6 @@
 .env
 stardict.db
+*temp*
 *.mp3
 *.json
 

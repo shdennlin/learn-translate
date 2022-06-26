@@ -1,33 +1,34 @@
-import unittest
-from pathlib import Path
+import pprint
 import sys
+from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.parent.parent))
 from src.models.ApiModel import ApiModel
 
 
-class TestApiModel(unittest.TestCase):
-
-    def test__download_audio(self):
-        model = ApiModel()
-        model.text = "onshore"
-        self.assertNotEqual(None, model._translate_text_api())
-
-    def test_download_audio(self):
-        model = ApiModel()
-        model.text = "onshore"
-        self.assertNotEqual(None, model._translate_text_api())
-
-    def test_eng_eng_dict_api(self):
-        model = ApiModel()
-        model.text = "onshore"
-        self.assertNotEqual(None, model._eng_eng_dict_api())
-
-    def test_google_dict_api(self):
-        model = ApiModel()
-        model.text = "onshore"
-        self.assertNotEqual(None, model._google_dict_api())
+model = ApiModel()
+model.text = "strike"
 
 
-if __name__ == '__main__':
-    unittest.main()
+def test_download_audio():
+    assert model._download_audio() is not None
+
+
+def test_google_translate_api():
+    assert model._google_translate_api() is not None
+
+
+def test_free_dict_api():
+    assert model._free_dict_api() is not None
+
+
+def test_google_dict_api():
+    assert model._google_dict_api() is not None
+
+
+def test_query_vocabulary():
+    assert model.query_vocabulary() is 200
+
+
+def test_query_sentence():
+    model.text = "I am a handsome boy"
+    assert model.query_sentence() is 200

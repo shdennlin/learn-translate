@@ -5,7 +5,12 @@ import json
 
 
 def requests_funs(name, rq_type, url, params=None, json=None):
-    """ rq_type = \"get\" or \"post\" """
+    """ rq_type = \"get\" or \"post\"
+    return:
+    1. 200 -> requests.get(post)
+    2. 404 -> ""
+    3. else-> None
+    """
     if rq_type == "get":
         response = requests.get(url, params=params)
     elif rq_type == "post":

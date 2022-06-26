@@ -1,0 +1,13 @@
+** HOW to test
+requires: [[https://docs.pytest.org/][pytest]]
+
+Step:
+1. ~cd~ to project home directory
+2. enter ~py.test~ in shell, and you can test all the tests
+3. if you want to test on file, enter:
+
+#+begin_src sh
+py.test {file which you want to test}
+# example
+py.text test\models\test_ApiModel.py
+#+end_src
