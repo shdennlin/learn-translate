@@ -81,6 +81,14 @@ python-versions = "*"
 sexpdata = ">=0.0.3"
 
 [[package]]
+name = "evdev"
+version = "1.5.0"
+description = "Bindings to the Linux input handling subsystem"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "flake8"
 version = "4.0.1"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -450,6 +458,9 @@ colorama = [
 ]
 epc = [
     {file = "epc-0.0.5.tar.gz", hash = "sha256:a14d2ea74817955a20eb00812e3a4630a132897eb4d976420240f1152c0d7d25"},
+]
+evdev = [
+    {file = "evdev-1.5.0.tar.gz", hash = "sha256:5b33b174f7c84576e7dd6071e438bf5ad227da95efd4356a39fe4c8355412fe6"},
 ]
 flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d"},
