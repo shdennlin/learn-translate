@@ -5,12 +5,15 @@ import json
 
 
 def requests_funs(name, rq_type, url, params=None, json=None):
-    """ rq_type = \"get\" or \"post\"
-    return:
-    1. 200 -> requests.get(post)
-    2. 404 -> ""
-    3. else-> None
+    """ request with parameter
+
+    Inputs:
+    rq_type = 'get' or 'post'
+
+    Returns:
+    resquests.get or resquests.post
     """
+
     if rq_type == "get":
         response = requests.get(url, params=params)
     elif rq_type == "post":
@@ -20,13 +23,11 @@ def requests_funs(name, rq_type, url, params=None, json=None):
 
     if status_code == 200:
         logger.debug(f"{status_code} -> {name}")
-        return response
     elif status_code == 404:
         logger.debug(f"{status_code} -> {name}")
-        return ""
     else:
         logger.error(logger.debug(f"{status_code} -> {name}"))
-        return None
+    return response
 
 
 def print_response_json(response):
@@ -34,5 +35,6 @@ def print_response_json(response):
 
 
 def write_response_json(response, path):
+    """ write dict or list to json file"""
     with open(path, "w", encoding="utf-8") as fp:
         json.dump(response, fp, indent=2, ensure_ascii=False)
