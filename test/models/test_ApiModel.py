@@ -25,10 +25,12 @@ def test_google_dict_api():
     assert model._google_dict_api() is not None
 
 
-def test_query_vocabulary():
-    assert model.query_vocabulary() is 200
+def test_get_text_translate():
+    assert model._get_text_translate("onshore") is 100 or 101
+    assert model.res is not {}
 
 
-def test_query_sentence():
-    model.text = "I am a handsome boy"
-    assert model.query_sentence() is 200
+def test_query():
+    model.query("strike")
+    assert model.res_html_en is not ""
+    assert model.res_html_zh is not ""
