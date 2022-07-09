@@ -4,6 +4,7 @@ stardict.db
 .env
 *temp*
 tmp/*
+.qt_for_python
 
 # editor
 .vscode/*
