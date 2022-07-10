@@ -19,10 +19,10 @@ class App(QApplication):
         self.main_controller = MainController(self.main_window, self.setting_window)
         self.hokey_controller = HokeyController(self.main_window)
 
-        self.hokey_controller.run()
+        # self.hokey_controller.run()
 
         self.main_window.ui.show()
-        self.main_window.input_content.setFocus()
+        # self.main_window.input_content.setFocus()
 
 
 if __name__ == '__main__':

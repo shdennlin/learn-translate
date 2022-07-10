@@ -1,3 +1,4 @@
+from PySide6.QtCore import QEvent
 from src.models.ApiModel import ApiModel
 from src.views.views import MainWindow, SettingWindow
 
@@ -5,8 +6,8 @@ from src.views.views import MainWindow, SettingWindow
 class MainController():
     def __init__(self, main_window, setting_window):
         super(MainController, self).__init__()
-        self._main_window = main_window
-        self._settingWindows = setting_window
+        self._main_window: MainWindow = main_window
+        self._settingWindows: SettingWindow = setting_window
         self._model: ApiModel = ApiModel()
 
         # Define object and event
